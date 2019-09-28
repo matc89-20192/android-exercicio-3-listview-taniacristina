@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     // Função do botão adicionar
     public void clicouAdicionar(View v) {
         String descricao = editTextDescricao.getText().toString();
-        int prioridade = Integer.parseInt(editTextPrioridade.getText().toString());
+        Integer prioridade = Integer.parseInt(editTextPrioridade.getText().toString());
 
         // Validando dados
         if(prioridade < 1 || prioridade > 10) {
@@ -47,18 +48,20 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Tarefa já cadastrada.", Toast.LENGTH_SHORT).show();
                 editTextDescricao.setText("");
                 editTextPrioridade.setText("");
-            } else {
+
+            } else { // Se a descrição não existe
                 tarefas.add(tarefa);
+                Collections.sort(tarefas); // ordenando a lista
                 editTextDescricao.setText("");
                 editTextPrioridade.setText("");
                 ArrayAdapter<Tarefa> adapter = new ArrayAdapter<Tarefa>(this,android.R.layout.simple_list_item_1, tarefas);
                 listView.setAdapter(adapter);
             }
         }
-
-        System.out.println("Descrição: " +descricao);
-        System.out.println("Prioridade: " +prioridade);
     }
 
-
+    // Função do botão remover
+    public void clicouRemover (View v) {
+        
+    }
 }

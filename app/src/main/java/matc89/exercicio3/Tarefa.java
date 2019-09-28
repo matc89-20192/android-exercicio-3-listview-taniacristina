@@ -1,8 +1,12 @@
 package matc89.exercicio3;
 
-public class Tarefa {
+import android.support.annotation.NonNull;
+
+import java.util.List;
+
+public class Tarefa implements Comparable<Tarefa> {
     private String descricao;
-    private int prioridade;
+    private Integer prioridade;
 
     public Tarefa(String descricao, int prioridade) {
         this.descricao = descricao;
@@ -13,8 +17,15 @@ public class Tarefa {
         return descricao;
     }
 
-    public int getPrioridade() {
+    public Integer getPrioridade() {
         return prioridade;
+    }
+
+    // Método para ordenar a lista pela prioridade
+    public List sortList(List tarefas, Tarefa tarefa) {
+
+
+        return tarefas;
     }
 
     // Metódo para verificar se a descrição já existe
@@ -30,5 +41,13 @@ public class Tarefa {
     @Override
     public String toString() {
         return descricao + "  " + "Prioridade: " + prioridade;
+    }
+
+    @Override
+    public int compareTo(Tarefa tarefa) {
+        if (tarefa == null ) {
+            return 0;
+        }
+        return prioridade.compareTo(tarefa.getPrioridade());
     }
 }
