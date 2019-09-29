@@ -21,12 +21,6 @@ public class Tarefa implements Comparable<Tarefa> {
         return prioridade;
     }
 
-    // Método para ordenar a lista pela prioridade
-    public List sortList(List tarefas, Tarefa tarefa) {
-
-
-        return tarefas;
-    }
 
     // Metódo para verificar se a descrição já existe
     @Override

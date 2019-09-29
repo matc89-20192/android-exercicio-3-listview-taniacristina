@@ -1,9 +1,10 @@
 package matc89.exercicio3;
 
+import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextPrioridade;
     private ListView listView;
     private List<Tarefa> tarefas = new ArrayList<Tarefa>();
+    private AdapterTarefasPersonalizadas adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,34 @@ public class MainActivity extends AppCompatActivity {
         editTextDescricao = (EditText)findViewById(R.id.editDescricao);
         editTextPrioridade = (EditText) findViewById(R.id.editPrioridade);
         listView = (ListView) findViewById(R.id.listView);
+
+        buttonRemover.setEnabled(false);
+
+        adapter = new AdapterTarefasPersonalizadas(tarefas, this);
+
+        // Escutador do clique no item no listView para exclui-lo
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                tarefas.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        // Método para desabilitar o botão remover caso a lista esteja vazia
+        adapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if(listView.getAdapter().isEmpty()) {
+                    buttonRemover.setEnabled(false);
+                } else {
+                    buttonRemover.setEnabled(true);
+                }
+            }
+        });
+
+
     }
 
     // Função do botão adicionar
@@ -54,14 +84,19 @@ public class MainActivity extends AppCompatActivity {
                 Collections.sort(tarefas); // ordenando a lista
                 editTextDescricao.setText("");
                 editTextPrioridade.setText("");
-                ArrayAdapter<Tarefa> adapter = new ArrayAdapter<Tarefa>(this,android.R.layout.simple_list_item_1, tarefas);
                 listView.setAdapter(adapter);
+                buttonRemover.setEnabled(true);
             }
         }
     }
 
     // Função do botão remover
     public void clicouRemover (View v) {
-        
+        if(listView.getCount() == 0){
+            Toast.makeText(getApplicationContext(),"Lista vazia.", Toast.LENGTH_SHORT).show();
+        } else {
+            tarefas.remove(0);
+            adapter.notifyDataSetChanged();
+        }
     }
 }
